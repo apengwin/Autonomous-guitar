@@ -7,5 +7,6 @@ On github, create new remote repo.
 execute `git remote add origin https://github.com/apengwin/149_project.git`
 
 `touch README.md`
+`git add README.md`
 
 Make first commit and push to remote.
