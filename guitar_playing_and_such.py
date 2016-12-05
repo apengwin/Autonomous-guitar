@@ -25,9 +25,10 @@ class StringInstrument(object):
         playable fret of the highest string is the last item of the list.
     
     """
-    def __init__(self, base_strings=None, solenoids_per_string=0):
+    def __init__(self, base_strings=None, notes_per_string=0, solenoids_per_string=0):
         self.base_strings = base_strings
         self.solenoids_per_string = solenoids_per_string
+        self.notes_per_string = notes_per_string
         self.songs_dict = dict()
         self.GPIO_dict = dict()
         self.GPIO_list = [None, [[18,"High"]], [[27,"High"]],[[22,"High"]],[[23,"High"]],
@@ -39,15 +40,12 @@ class StringInstrument(object):
             None,[[26, "Low"], [20, "Low"]],[[26, "High"], [20, "Low"]],
             [[26, "Low"], [20, "High"]],[[26, "High"], [20, "High"]]]
     
-    def playSong(self, song):
-        return None
-    
     def get_all_notes(self):
         all_notes = []
-        for string in self.base_strings():
+        for string in self.base_strings:
             string_notes = []
             string_start = np.where(NOTES == string.upper())[0][0]
-            for i in range():
+            for i in range(self.notes_per_string):
                 next_note = (string_start + i) % len(NOTES)
                 string_notes.append(NOTES[next_note])
             all_notes.append([string_notes])
@@ -61,82 +59,65 @@ class StringInstrument(object):
                 self.GPIO_dict[fret] = self.GPIO_list[j]
                 j += 1
     
-    def makeValidSong(self, song):
-        valid_song = ValidSong(song, self).convert_notes()
-        
-        return
-        
-    def addSong(self, song):
-        song_dict[song.getTitle()] = song.getSong()
+    def add_song(self, song):
+        """ This assumes the user has not formatted the song in any way
+        """
+        valid_frets = convert_notes(song.get_frets(), self)
+        title = song.get_title()
+        tempo = song.get_tempo()
+        note_types = song.get_note_types()
+        valid_song = Song(title, valid_frets, note_types, tempo) 
+        self.songs_dict[title] = valid_song
+    
+    def get_songs_dict(self):
+        return self.songs_dict
     
     def get_GPIO_dict(self):
         return self.GPIO_dict
     
+    def get_notes_per_string(self):
+        return self.notes_per_string
+    
     def get_base_strings(self):
         return self.base_strings
+    
+    def playSong(self, song, GPIO_dict):
+        for note in song:
+            if note[-1] == "rest":
+                duration = note[1]
+                time.sleep(duration)
+            elif note[-1] == "strum":
+                strum(note, GPIO_dict)
+            
+    def strum(self,note, GPIO_dict):
+        delay = note[1]
+        frets = note[0]
+        open_strings = fret[0]
+        GPIO_frets = [GPIO_dict[fret] for fret in frets]
+        GPIO_strings = [GPIO_dict[open_string] for string in open_strings]
+
+#         curr_time = time.clock()
+#         GPIO.output(GPIO_frets, GPIO.HIGH) # set the GPIO_fret HIGH
+#         time.sleep(0.05) # this gives time for the fret to be compressed before strumming
+#         GPIO.output(GPIO_strings, GPIO.HIGH)
+#         time.sleep(0.05)
+#         GPIO.output(GPIO_strings, GPIO.LOW)
+#         while time.clock() < curr_time + delay: {}
+#         GPIO.output(GPIO_frets, GPIO.LOW)
     
         
 class Guitar(StringInstrument): 
     def __init__(self, n=0):
         strs = np.array(["E", "A", "D", "G", "B", "e"])
-        StringInstrument.__init__(self,base_strings=strs, solenoids_per_string=n)
+        StringInstrument.__init__(self,base_strings=strs, notes_per_string=23,solenoids_per_string=n)
         self.setGPIO_dict()
-
 
 class Ukulele(StringInstrument):
     def __init__(self,n=0):
         strs = np.array(["G", "C", "E", "A"])
-        StringInstrument.__init__(self,base_strings=strs, solenoids_per_string=n)
+        StringInstrument.__init__(self,base_strings=strs, notes_per_string=17,solenoids_per_string=n)
         self.setGPIO_dict()
-        
-
-
-
-PREFIX_LIST = ["large","long","breve","whole","half","quarter",
-             "eighth","sixteenth","thirtysecond"]
-MULTIPLIER_LIST = [32, 16, 8, 4, 2, 1, 1/2, 1/4, 1/8]
-POSTFIX_LIST = ["dotted"]
-NOTE_LIST = [prefix + "-note" for prefix in PREFIX_LIST]
-NOTE_LIST = NOTE_LIST + [note +"-"+ postfix for postfix in POSTFIX_LIST for note in NOTE_LIST]
-REST_LIST = [prefix + "-rest" for prefix in PREFIX_LIST]
-REST_LIST = REST_LIST + [rest + "-" + postfix for postfix in POSTFIX_LIST for rest in REST_LIST]
-
-def prefix2Multiplier_dict():
-    i = 0
-    prefix2Multiplier = {}
-    for prefix in PREFIX_LIST:
-        prefix2Multiplier[prefix] = MULTIPLIER_LIST[i]
-        i += 1
-    return prefix2Multiplier
-
-def note2Delay_dict(note_names, tempo, prefix2Multiplier):
-    quarter_note_time = 60 / tempo
-    note2Delay = {}
-    for note_name in note_names:
-        split_note = note_name.split("-")
-        delay = prefix2Multiplier[split_note[0]] * quarter_note_time
-        if split_note[-1] == "dotted":
-            delay = delay + (0.5 * delay)
-        note2Delay[note_name] = delay
-    return note2Delay
-            
-def findDelays(note_names, tempo):
-    """
-    Given an input of note names (e.g. quarter-note, half-rest), this converts
-    the notes into numerical delays
     
-    Attributes
-    ----------
-    note_names : String array
-    tempo : int
-        quarter notes / min
-    """
-    delays = []
-    prefix2Multiplier = prefix2Multiplier_dict()
-    note2Delay = note2Delay_dict(NOTE_LIST+REST_LIST, tempo, prefix2Multiplier)
-    for note in note_names:
-        delays.append(note2Delay[note])
-    return delays
 
 # This is to be used on the Raspberry Pi
 # 

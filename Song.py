@@ -1,6 +1,24 @@
 import numpy as np
 from guitar_playing_and_such import *
 
+PREFIX_LIST = ["large","long","breve","whole","half","quarter",
+             "eighth","sixteenth","thirtysecond"]
+MULTIPLIER_LIST = [32, 16, 8, 4, 2, 1, 1/2, 1/4, 1/8]
+POSTFIX_LIST = ["dotted"]
+NOTE_LIST = [prefix + "-note" for prefix in PREFIX_LIST]
+NOTE_LIST = NOTE_LIST + [note +"-"+ postfix for postfix in POSTFIX_LIST for note in NOTE_LIST]
+REST_LIST = [prefix + "-rest" for prefix in PREFIX_LIST]
+REST_LIST = REST_LIST + [rest + "-" + postfix for postfix in POSTFIX_LIST for rest in REST_LIST]
+
+def prefix_to_multiplier_dict():
+    i = 0
+    prefix2Multiplier = {}
+    for prefix in PREFIX_LIST:
+        prefix2Multiplier[prefix] = MULTIPLIER_LIST[i]
+        i += 1
+    return prefix2Multiplier
+    
+    
 class Song(object):
     """ Any tab along with the associated delays 
 
@@ -15,88 +33,148 @@ class Song(object):
     tempo : int
         the tempo of a song (beats/min)
     """
-    def __init__(self, title, frets, tempo=0, note_types=None):
+    def __init__(self, title, frets, note_types, tempo=0):
         self.title = title
         self.frets = frets
-        self.delays = delays
         self.tempo = tempo
+        self.note_types = note_types
+        self.durations = self.find_durations(note_types, tempo)
+        self.song = self.make_song()
     
-    def getTitle(self):
-        return title
+    def get_title(self):
+        return self.title
     
-    def getSong(self):
-        return (frets, delays)
+    def get_note_types(self):
+        return self.note_types
     
-    def getDelays(self):
-        return delays
+    def get_song(self):
+        return self.song
     
-    def getFrets(self):
-        return frets
+    def get_durations(self):
+        return self.durations
+    
+    def get_tempo(self):
+        return self.tempo
+        
+    def get_frets(self):
+        return self.frets
 
-class ValidSong(Song):
-    """ A song that can be played by a given instrument 
-    """
-    def __init__(self, frets, instrument):
-        self.instrument = instrument
-        self.frets = frets
-        self.frets2Notes = None
-        self.notes2ValidFrets = None
-        self.frets2Values = None
+    def note_to_delay_dict(self,note_names, tempo, prefix_to_multiplier):
+        quarter_note_time = 60 / tempo
+        note2Delay = {}
+        for note_name in note_names:
+            split_note = note_name.split("-")
+            delay = prefix_to_multiplier[split_note[0]] * quarter_note_time
+            if split_note[-1] == "dotted":
+                delay = delay + (0.5 * delay)
+            note2Delay[note_name] = delay
+        return note2Delay
 
-    def frets2Notes_dict(all_strings):
-        frets2Notes = {}
-        seen_E = False
-        for string in all_strings:
-            i = 0
-            letter = string[0][0]
-            if letter == "E" and seen_E:
-                letter = "e"
-            elif letter == "E" and not seen_E:
-                seen_E = True
+    def find_durations(self, note_names, tempo):
+        """
+        Given an input of note names (e.g. quarter-note, half-rest), this converts
+        the notes into numerical durations
 
-            for note in string[0]:
-                fret_str = letter + str(i) 
-                frets2Notes[fret_str] = note
+        Attributes
+        ----------
+        note_names : String array
+        tempo : int
+            quarter notes / min
+        """
+        durations = []
+        prefix2Multiplier = prefix_to_multiplier_dict()
+        note2Delay = self.note_to_delay_dict(NOTE_LIST+REST_LIST, tempo, prefix2Multiplier)
+        for note in note_names:
+            durations.append(note2Delay[note])
+        return durations
+    
+    def find_actions(self, note_list):
+        actions = []
+        for note in note_list:
+            note_or_rest = note.split("-")[1]
+            if note_or_rest == "note":
+                actions.append("strum")
+            elif note_or_rest == "rest":
+                actions.append("rest")
+            else:
+                print("Input " + note_or_rest + " is not actionable.")
+                return None
+        return actions
+
+    def make_song(self):
+        actions = self.find_actions(self.note_types)
+        durations = self.durations
+        song_actions = []
+        i = 0 # counter for frets
+        j = 0 # counter for durations
+        for action in actions:
+            if action == "strum":
+                song_actions.append([self.frets[i], durations[j], action])
                 i += 1
-        return frets2Notes
+            elif action == "rest":
+                song_actions.append([None, durations[j], action])
+            j += 1  
+        return song_actions
 
-    def notes2ValidFrets_dict(all_strings):
-        notes2ValidFrets = {}
-        seen_E = False
-        for string in all_strings:
-            i = 0
-            letter = string[0][0]
-            if letter == "E" and seen_E:
-                letter = "e"
-            elif letter == "E" and not seen_E:
-                seen_E = True
 
-            for note in string[0][:5]:
-                fret_str = letter + str(i) 
-                if note in notes2ValidFrets:
-                    notes2ValidFrets[note] += [fret_str]
-                else:
-                    notes2ValidFrets[note] = [fret_str]
-                i += 1
-        return notes2ValidFrets
+############################################################################
+############# Helper Methods (mostly dictionary constructors) ##############
+############################################################################
 
-    def frets2Values_dict():
-        frets2Values = {}
-        seen_E = False
+def frets_to_notes_dict(all_strings):
+    frets_to_notes = {}
+    seen_E = False
+    for string in all_strings:
         i = 0
-        for string in STRINGS:
-            letter = string[0][0]
-            if letter == "E" and seen_E:
-                letter = "e"
-            elif letter == "E" and not seen_E:
-                seen_E = True
+        letter = string[0][0]
+        if letter == "E" and seen_E:
+            letter = "e"
+        elif letter == "E" and not seen_E:
+            seen_E = True
 
-            for j in range(23):
-                frets2Values[string + str(j)] = i
-                i += 1
-        return frets2Values
-    
-    def valid_equivalent_note(fret, frets2Notes, notes2ValidFrets):
+        for note in string[0]:
+            fret_str = letter + str(i) 
+            frets_to_notes[fret_str] = note
+            i += 1
+    return frets_to_notes
+
+def notes_to_valid_frets_dict(all_strings):
+    notes_to_valid_frets = {}
+    seen_E = False
+    for string in all_strings:
+        i = 0
+        letter = string[0][0]
+        if letter == "E" and seen_E:
+            letter = "e"
+        elif letter == "E" and not seen_E:
+            seen_E = True
+
+        for note in string[0][:5]:
+            fret_str = letter + str(i) 
+            if note in notes_to_valid_frets:
+                notes_to_valid_frets[note] += [fret_str]
+            else:
+                notes_to_valid_frets[note] = [fret_str]
+            i += 1
+    return notes_to_valid_frets
+
+def frets_to_values_dict(instrument):
+    frets_to_values = {}
+    seen_E = False
+    i = 0
+    for string in instrument.get_base_strings():
+        letter = string[0][0]
+        if letter == "E" and seen_E:
+            letter = "e"
+        elif letter == "E" and not seen_E:
+            seen_E = True
+
+        for j in range(instrument.get_notes_per_string()):
+            frets_to_values[string + str(j)] = i
+            i += 1
+    return frets_to_values
+
+def valid_equivalent_note(fret, instrument, frets_to_notes, notes_to_valid_frets):
     """
     Given a single input note, this function will output
     a note that can be played by one of the solenoids on
@@ -106,9 +184,9 @@ class ValidSong(Song):
     ---------
     fret : String
         A note given from a guitar tab
-    frets2Notes : dict
+    frets_to_notes : dict
         Mapping from every fret on the guitar to a note
-    notes2ValidFrets : dict
+    notes_to_valid_frets : dict
         Mapping from every note to a playable fret
 
     Returns
@@ -128,34 +206,33 @@ class ValidSong(Song):
     >>> valid_equivalen_note("B10")
     'Error: Cannot play that note'
     """
-    if note == None or note == "":
+    if fret == None or fret == "":
         print("'None' or "" is not a valid note")
     else:
-        valid_frets = notes2ValidFrets[frets2Notes[fret]]
-        fret2Values = frets2Values_dict()
+        valid_frets = notes_to_valid_frets[frets_to_notes[fret]]
+        fret2Values = frets_to_values_dict(instrument)
         for valid_fret in valid_frets:
             if fret2Values[fret] <= fret2Values[valid_fret]:
                 return valid_fret
     print("Error: Cannot play that note")
     return None
 
-    def convert2RawArrays(notes):
-        note_arrays = []
-        for note in notes:
-            note_arrays += [note.split("+")]
-        return note_arrays
+def convert_to_raw_arrays(notes):
+    note_arrays = []
+    for note in notes:
+        note_arrays += [note.split("+")]
+    return note_arrays
 
-    def convert_notes(raw_notes):
-        all_strings = all_notes()
-        frets2Notes = frets2Notes_dict(all_strings)
-        notes2ValidFrets = notes2ValidFrets_dict(all_strings)
-
-        raw_note_arrays = convert2RawArrays(raw_notes)
-        converted_notes = []
-        for raw_note_arr in raw_note_arrays:
-            sub_notes = []
-            for raw_note in raw_note_arr:
-                sub_notes += [valid_equivalent_note(raw_note, frets2Notes, notes2ValidFrets)]
-            converted_notes += [sub_notes]
-        print(raw_note_arrays)
-        return converted_notes
+def convert_notes(raw_notes, instrument):
+    all_strings = instrument.get_all_notes()
+    frets_to_notes = frets_to_notes_dict(all_strings)
+    notes_to_valid_frets = notes_to_valid_frets_dict(all_strings)
+    raw_note_arrays = convert_to_raw_arrays(raw_notes)
+    converted_notes = []
+    
+    for raw_note_arr in raw_note_arrays:
+        sub_notes = []
+        for raw_note in raw_note_arr:
+            sub_notes += [valid_equivalent_note(raw_note, instrument, frets_to_notes, notes_to_valid_frets)]
+        converted_notes += [sub_notes]
+    return converted_notes
