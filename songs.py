@@ -17,7 +17,6 @@ DAY_TRIPPER_NOTES = ["E0","E3", "E4", "A2", "D2", "D0", "A2", "D4", "A2", "D0", 
 
 
 # "Let it Be" by Beatles (ukulele vesion)
-"G","C","E","A"
 BEATLES_NOTES = ["A3+E0","G0","A3+E0","G0","C2+E3+A2","G0","C2+E3+A2","G0",
 				 "E0+A0","G2","E0+A0","G2","E1+A0","G2","E1+A0","G2","A3+E0",
 				 "G0","A3+E0","G0","C2+E3+A2","G0","C2+E3+A2","G0","C5+E5",
@@ -39,5 +38,4 @@ STAIRWAY_NOTES = ["G2","C0","E0","A0","G1+A2","E0","C0","A2","G0+A3",
 				  "C2+E2+A0"]
 # "Brown Eyed Girl" by Van Morrison (ukulele version)
 
-BROWN_NOTES = ["G0+A2","G2+A3","G4+A5",]
-
+BROWN_NOTES = ["G0+A2","G2+A3","G4+A5"]
