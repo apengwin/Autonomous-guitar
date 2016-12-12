@@ -1,9 +1,8 @@
 import guitar_playing_and_such
 import Song
-import songs
 import re
 
-"""
+""" 
 File that will use Jasper API to control the robot
 
 Key API elements
@@ -22,8 +21,6 @@ def handle(text, mic, profile):
 	if bool(re.search("Pi", text, re.IGNORECASE)):
 		print("How can I help you?")
 		command = mic.activeListen()
-		
-
 
 	if bool(re.search("Play", text, re.IGNORECASE)):
 		print("OK")

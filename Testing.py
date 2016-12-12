@@ -4,7 +4,7 @@ import re
 A nice file for testing Jasper's abilities
 """
 
-WORDS = ["Testing"]
+WORDS = ["Testing"] 
 
 def handle(text, mic, profile):
 	print("How can I help you?")

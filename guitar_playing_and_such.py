@@ -1,7 +1,7 @@
 import numpy as np
 from Song import *
 # import RPi.GPIO as GPIO # uncomment this when working on the Rasberry Pi
-
+ 
 # This is to be used on the Raspberry Pi
 # 
 # chan_list = [18,27,22,23,24,10,9,25,6,12,13,19,16,26,20]
