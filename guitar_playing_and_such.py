@@ -1,8 +1,24 @@
 import numpy as np
 from Song import *
-from songs import *
 # import RPi.GPIO as GPIO # uncomment this when working on the Rasberry Pi
 
+# This is to be used on the Raspberry Pi
+# 
+# chan_list = [18,27,22,23,24,10,9,25,6,12,13,19,16,26,20]
+# GPIO.setup(chan_list, GPIO.OUT)
+# """
+# ##### Example of setting pins HIGH #######
+# ##### ---------------------------- #######
+# GPIO.output(chan_list[0], GPIO.HIGH)
+# # Can set every channel HIGH/LOW by doing this
+# GPIO.output(chan_list, GPIO.HIGH)
+# # Could also set multiple channels by doing this
+# GPIO.output(chan_list[0:3], (GPIO.HIGH, GPIO.LOW, GPIO.HIGH))
+
+# GPIO.cleanup() # This should be put at the end of the script 
+# """
+
+EPSILON = 1e-2
 NOTES = np.array(["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"])
 
 class StringInstrument(object):
@@ -30,15 +46,15 @@ class StringInstrument(object):
         self.solenoids_per_string = solenoids_per_string
         self.notes_per_string = notes_per_string
         self.songs_dict = dict()
-        self.GPIO_dict = dict()
-        self.GPIO_list = [None, [[18,"High"]], [[27,"High"]],[[22,"High"]],[[23,"High"]],
+        self.GPIO_list = np.array([None, [[18,"High"]], [[27,"High"]],[[22,"High"]],[[23,"High"]],
             None, [[24,"High"]], [[10,"High"]],[[9,"High"]] ,[[25,"High"]],
             None,[[11,"High"]],[[8,"High"]],[[7,"High"]],[[5,"High"]],
             None,[[6,"High"]],[[12,"High"]],[[13,"High"]], None,
             None,[[19, "Low"], [16, "Low"]],[[19, "High"], [16, "Low"]],
             [[19, "Low"], [16, "High"]],[[19, "High"], [16, "High"]],
             None,[[26, "Low"], [20, "Low"]],[[26, "High"], [20, "Low"]],
-            [[26, "Low"], [20, "High"]],[[26, "High"], [20, "High"]]]
+            [[26, "Low"], [20, "High"]],[[26, "High"], [20, "High"]]])
+        self.GPIO_dict = self.setGPIO_dict()
     
     def get_all_notes(self):
         all_notes = []
@@ -52,6 +68,7 @@ class StringInstrument(object):
         return all_notes
     
     def setGPIO_dict(self):
+        self.GPIO_dict = dict()
         j = 0
         for string in self.base_strings:
             for i in range(self.solenoids_per_string + 1):
@@ -81,7 +98,7 @@ class StringInstrument(object):
     def get_base_strings(self):
         return self.base_strings
     
-    def playSong(self, song, GPIO_dict):
+    def play(self, song, GPIO_dict):
         for note in song:
             if note[-1] == "rest":
                 duration = note[1]
@@ -96,21 +113,27 @@ class StringInstrument(object):
         GPIO_frets = [GPIO_dict[fret] for fret in frets]
         GPIO_strings = [GPIO_dict[open_string] for string in open_strings]
 
-#         curr_time = time.clock()
-#         GPIO.output(GPIO_frets, GPIO.HIGH) # set the GPIO_fret HIGH
-#         time.sleep(0.05) # this gives time for the fret to be compressed before strumming
-#         GPIO.output(GPIO_strings, GPIO.HIGH)
-#         time.sleep(0.05)
-#         GPIO.output(GPIO_strings, GPIO.LOW)
-#         while time.clock() < curr_time + delay: {}
-#         GPIO.output(GPIO_frets, GPIO.LOW)
+        curr_time = time.clock()
+        GPIO.output(GPIO_frets, GPIO.HIGH) # set the GPIO_fret HIGH
+        time.sleep(0.05) # this gives time for the fret to be compressed before strumming
+        if len(GPIO_strings) > 1:
+            for string in GPIO_strings:
+                GPIO.output(string, GPIO.HIGH)
+                time.sleep(EPSILON)
+        else:
+           GPIO.output(GPIO_strings, GPIO.HIGH) 
+        time.sleep(0.05)
+        GPIO.output(GPIO_strings, GPIO.LOW)
+        while time.clock() < curr_time + delay: {}
+        GPIO.output(GPIO_frets, GPIO.LOW)
     
         
 class Guitar(StringInstrument): 
     def __init__(self, n=0):
         strs = np.array(["E", "A", "D", "G", "B", "e"])
-        StringInstrument.__init__(self,base_strings=strs, notes_per_string=23,solenoids_per_string=n)
+        StringInstrument.__init__(self, base_strings=strs, notes_per_string=23,solenoids_per_string=n)
         self.setGPIO_dict()
+
 
 class Ukulele(StringInstrument):
     def __init__(self,n=0):
@@ -119,17 +142,3 @@ class Ukulele(StringInstrument):
         self.setGPIO_dict()
     
 
-# This is to be used on the Raspberry Pi
-# 
-# chan_list = [18,27,22,23,24,10,9,25,6,12,13,19,16,26,20]
-# GPIO.setup(chan_list, GPIO.OUT)
-# ##### Example of setting pins HIGH #######
-# ##### ---------------------------- #######
-# GPIO.output(chan_list[0], GPIO.HIGH)
-# # Can set every channel HIGH/LOW by doing this
-# GPIO.output(chan_list, GPIO.HIGH)
-# # Could also set multiple channels by doing this
-# GPIO.output(chan_list[0:3], (GPIO.HIGH, GPIO.LOW, GPIO.HIGH))
-
-# GPIO.cleanup() # This should be put at the end of the script 
-# 
