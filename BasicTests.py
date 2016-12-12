@@ -75,7 +75,7 @@ def TwoNoteSongTest():
     tempo = 120
     song = Song("Basic", clean_basic_frets, basic_durations, tempo)
     print(song.get_song())
-    #guitar.play(song)
+    #guitar.play(song) 
 
 def testEachFret():
     ### Playing a sequence where every possible fret is played once
@@ -99,7 +99,6 @@ def testEachFret():
     tempo = 60
     song = Song("Test All", clean_basic_frets, basic_durations, tempo)
     print(song.get_song())
-
 
 
 ############### Tests ##################

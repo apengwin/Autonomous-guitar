@@ -1,6 +1,6 @@
 import numpy as np
 from guitar_playing_and_such import *
-
+ 
 PREFIX_LIST = ["large","long","breve","whole","half","quarter",
              "eighth","sixteenth","thirtysecond"]
 MULTIPLIER_LIST = [32, 16, 8, 4, 2, 1, 1/2, 1/4, 1/8]
