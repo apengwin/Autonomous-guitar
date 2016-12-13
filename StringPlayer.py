@@ -24,29 +24,32 @@ def test():
         guitar = Guitar(4)
 
 def play(song_name, speed):
+	guitar = Guitar(4)
 	print "Playing " + song_name +" at " + str(speed) + " speed."
 	print guitar.play(song_name, speed) 
 
 def handle(text, mic, profile):
-	guitar = Guitar(4)
         # make this more sophisticated
-	song_name = text.split()[1:]
+	song_name = " ".join(text.split()[1:])
 	global guitar_process
-        if song_name[0] == "PLAY":
+        if text.split()[0] == "PLAY":
 		print "Alright"
 		print "How fast would you like to play? (slow/normal/fast)"
-       		print guitar.get_all_notes()
+       #		print guitar.get_all_notes()
 		time.sleep(1)
 		speed = mic.activeListen()
 		if speed == None:
 			speed = "normal"
-                guitar_process = Process(target=play, args=(song_name, speed)
+                guitar_process = Process(target=play, args=(song_name, speed))
+                print "yeah"
                 guitar_process.start()
-        if song_name[0] == "STOP":
+        elif text.split()[0] == "STOP":
 		if guitar_process != None:     
 			print "attempting to stop guitar"
 			guitar_process.terminate()
 			guitar_process = None
+	else:
+		pass
 
 def isValid(text):
 	print "Getting songs"

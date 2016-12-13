@@ -7,9 +7,9 @@ import time
 # import RPi.GPIO as GPIO # uncomment this when working on the Rasberry Pi
  
 # This is to be used on the Raspberry Pi
-# 
-# chan_list = [18,27,22,23,24,10,9,25,6,12,13,19,16,26,20]
-# GPIO.setup(chan_list, GPIO.OUT)
+# GPIO.setmode(GPIO.BOARD)
+# chan_list = [18,27,22,23,24,10,9,25,11,8,7,5,6,12,13,19,16,26,20,21,1,2,3,4,14,15,17]
+# GPIO.setup(chan_list, GPIO.OUT, initial=GPIO.LOW)
 # """
 # ##### Example of setting pins HIGH #######
 # ##### ---------------------------- #######
@@ -110,9 +110,9 @@ class Guitar(object):
     def play(self, song_name, speed):
         actual_song = self.songs_dict[song_name]
         tempo_multiplier = 1
-        if speed == "faster":
+        if speed == "fast":
             tempo_multiplier = 0.5
-        elif speed == "slower":
+        elif speed == "slow":
             tempo_multiplier = 1.5
          
         # print actual_song   
@@ -127,23 +127,22 @@ class Guitar(object):
             
     def strum(self,note, tempo_multiplier):
         frets = note[0]
-        open_strings = [str(fret[0]+"0") for fret in frets]
-        GPIO_frets = [self.GPIO_dict[fret] for fret in frets]
-        GPIO_strings = [self.GPIO_dict[string] for string in open_strings]
+        open_string_to_GPIO = {"E": 2, "A":3, "D":4, "G":14, "B":15, "e":17}
+        GPIO_frets = []
+        for fret in frets:
+            GPIO_frets += self.GPIO_dict[fret]
+        GPIO_strings = [open_string_to_GPIO[fret[0]] for fret in frets]
         delay = note[1]
 
         curr_time = time.clock()
         #GPIO.output(GPIO_frets, GPIO.HIGH) # set the GPIO_fret HIGH
         print str(GPIO_frets) + ", " + str(delay) # comment this out when you actually play 
         time.sleep(0.05) # this gives time for the fret to be compressed before strumming
-        print str(GPIO_strings) + ", " + str(len(GPIO_strings))
-        if len(GPIO_strings) > 1:
-            for string in GPIO_strings:
-                #GPIO.output(string, GPIO.HIGH)
-                print "Plucking " + str(string) 
+        for string in GPIO_strings:
+            #GPIO.output(string, GPIO.HIGH)
+            print "Plucking " + str(string) 
+            if (len(GPIO_strings) > 1):
                 time.sleep(EPSILON)
-        #else:
-           #GPIO.output(GPIO_strings, GPIO.HIGH) 
         time.sleep(0.05)
         #GPIO.output(GPIO_strings, GPIO.LOW)
         print "turning off string plucking solenoids"
