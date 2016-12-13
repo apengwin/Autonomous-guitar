@@ -1,4 +1,4 @@
-from guitar_playing_and_such import *
+from guitar import *
 import Song
 import time
 import re
@@ -18,17 +18,21 @@ handle : function
 
 WORDS = ["PLAY ONE"]#, "PLAY TWO","PLAY THREE"]
 
+def test():
+        guitar = Guitar(4)
+
 def handle(text, mic, profile):
-	guitar = Guitar(n=4)
+	guitar = Guitar(4)
 	song_name = text.split(" ")[1]
 	print "Alright"
 	print "How fast would you like to play? (slow/normal/fast)"
+        print guitar.get_all_notes()
 	time.sleep(1)
 	speed = mic.activeListen()
 	if speed == None:
 		speed = "normal"
 	print "Playing " + song_name +" at " + str(speed) + " speed."
-	print guitar.play_song(song_name, speed) 
+	print guitar.play(song_name, speed) 
 
 def isValid(text):
 	print "Getting songs"

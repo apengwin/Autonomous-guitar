@@ -3,10 +3,10 @@
 #######       (so basic...)     ##########
 ##########################################
 
-from guitar_playing_and_such import *
+from guitar import *
 from Song import *
 
-guitar = Guitar(n=4)
+guitar = Guitar(4)
 
 def OneFretTest():
     basic_frets = ["E3"]

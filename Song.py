@@ -1,5 +1,5 @@
 import numpy as np
-from guitar_playing_and_such import *
+#from guitar import *
  
 PREFIX_LIST = ["large","long","breve","whole","half","quarter",
              "eighth","sixteenth","thirtysecond"]

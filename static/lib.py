@@ -1,3 +1,14 @@
+ONE_FRETS = ["A3", "A2", "E1+G1"]
+ONE_DURATIONS = ["quarter-note", "quarter-rest", "half-note", "quarter-rest", "eighth-note"]
+
+TWO_FRETS = ["A1"]
+TWO_DURATIONS = ["quarter-note"]
+
+THREE_FRETS = ["D2", "D2","D2"]
+THREE_DURATIONS = ["quarter-note","quarter-note","quarter-note"]
+
+
+
 DAY_TRIPPER_NOTES = ["E0","E3", "E4", "A2", "D2", "D0", "A2", "D4", "A2", "D0", "D2",
 					 "E0","E3", "E4", "A2", "D2", "D0", "A2", "D4", "A2", "D0", "D2",
 					 "E0","E3", "E4", "A2", "D2", "D0", "A2", "D4", "A2", "D0", "D2",
