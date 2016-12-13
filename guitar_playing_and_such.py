@@ -98,16 +98,24 @@ class StringInstrument(object):
     def get_base_strings(self):
         return self.base_strings
     
-    def play(self, song, GPIO_dict):
-        for note in song:
+    def play(self, song_name, speed):
+	actual_song = songs_dict[song_name]
+	tempo_multiplier = 1
+	if speed == "faster":
+		tempo_multiplier = 0.5
+	elif speed == "slower":
+		tempo_multiplier = 1.5
+
+        for note in actual_song:
             if note[-1] == "rest":
-                duration = note[1]
+                duration = tempo_multiplier * note[1]
+		print(str(note[0]) + ", " + str(duration) + ", " + (note[2:]))
                 time.sleep(duration)
             elif note[-1] == "strum":
-                strum(note, GPIO_dict)
+                strum(note, GPIO_dict, tempo_multiplier)
             
-    def strum(self,note, GPIO_dict):
-        delay = note[1]
+    def strum(self,note, GPIO_dict, tempo_multiplier):
+        delay = tempo_multiplier * note[1]
         frets = note[0]
         open_strings = fret[0]
         GPIO_frets = [GPIO_dict[fret] for fret in frets]
@@ -131,7 +139,7 @@ class StringInstrument(object):
 class Guitar(StringInstrument): 
     def __init__(self, n=0):
         strs = np.array(["E", "A", "D", "G", "B", "e"])
-        StringInstrument.__init__(self, base_strings=strs, notes_per_string=23,solenoids_per_string=n)
+        super(Guitar, self).__init__(base_strings=strs, notes_per_string=23,solenoids_per_string=n)
         self.setGPIO_dict()
 
 

@@ -1,5 +1,6 @@
 import guitar_playing_and_such
 import Song
+import time
 import re
 
 """ 
@@ -15,21 +16,22 @@ handle : function
 	A funtion that performs actions when the text is valid
 """
 
-WORDS = ["Pi", "example", "google"]
+WORDS = ["PLAY ONE", "PLAY TWO","PLAY THREE"]
 
 def handle(text, mic, profile):
-	if bool(re.search("Pi", text, re.IGNORECASE)):
-		print("How can I help you?")
-		command = mic.activeListen()
-
-	if bool(re.search("Play", text, re.IGNORECASE)):
-		print("OK")
-
+	guitar = Guitar(n=4)
+	song_name = text.split(" ")[1]
+	print "Alright"
+	print "How fast would you like to play? (slow/normal/fast)"
+	time.sleep(1)
+	speed = mic.activeListen()
+	if speed == None:
+		speed = "normal"
+	print "Playing " + song_name +" at " + str(speed) + " speed."
+	print guitar.play_song(song_name, speed) 
 
 def isValid(text):
-	cond1 = bool(re.search("Pi", text, re.IGNORECASE))
-	cond2 = bool(re.search(r'\bPi\b', text, re.IGNORECASE))
-	return cond1 or cond2
-
-
-print(isValid("Pi"))
+	cond1 = bool(re.search("play one", text, re.IGNORECASE))
+	cond2 = bool(re.search("play two", text, re.IGNORECASE))
+	cond3 = bool(re.search("play three", text, re.IGNORECASE))
+	return cond1 or cond2 or cond3
