@@ -1,6 +1,8 @@
+from __future__ import division
 import numpy as np
 from Song import *
 from static.lib import *
+import time
 
 # import RPi.GPIO as GPIO # uncomment this when working on the Rasberry Pi
  
@@ -49,14 +51,12 @@ class Guitar(object):
         self.notes_per_string = 23
         self.songs_dict = dict()
         self.set_songs_dict()
-        self.GPIO_list = np.array([None, [[18,"High"]], [[27,"High"]],[[22,"High"]],[[23,"High"]],
-            None, [[24,"High"]], [[10,"High"]],[[9,"High"]] ,[[25,"High"]],
-            None,[[11,"High"]],[[8,"High"]],[[7,"High"]],[[5,"High"]],
-            None,[[6,"High"]],[[12,"High"]],[[13,"High"]], None,
-            None,[[19, "Low"], [16, "Low"]],[[19, "High"], [16, "Low"]],
-            [[19, "Low"], [16, "High"]],[[19, "High"], [16, "High"]],
-            None,[[26, "Low"], [20, "Low"]],[[26, "High"], [20, "Low"]],
-            [[26, "Low"], [20, "High"]],[[26, "High"], [20, "High"]]])
+        self.GPIO_list = np.array([None, [18], [27],[22],[23],
+            None, [24], [10],[9] ,[25],
+            None,[11],[8],[7],[5],
+            None,[6],[12],[13], None,
+            None,[19],[16], [19,16], [26],
+            None,[20],[21],[20,21],[1]])
         self.GPIO_dict = dict()
         self.setGPIO_dict()
     
@@ -85,7 +85,7 @@ class Guitar(object):
         """ This assumes the user has not formatted the song in any way
         """
         valid_frets = convert_notes(frets, self)
-        valid_song = Song(title, valid_frets, durations, tempo) 
+        valid_song = Song(title, valid_frets, durations, tempo=tempo)
         self.songs_dict[title] = valid_song.get_song()
     
     def set_songs_dict(self):
@@ -114,35 +114,42 @@ class Guitar(object):
             tempo_multiplier = 0.5
         elif speed == "slower":
             tempo_multiplier = 1.5
-            
+         
+        # print actual_song   
         for note in actual_song:
             if note[-1] == "rest":
-                duration = note[1]
+                duration = tempo_multiplier * note[1]
+                print "rest for " + str(duration) + " seconds"
                 time.sleep(duration)
             elif note[-1] == "strum":
                 self.strum(note, speed)
+
             
     def strum(self,note, tempo_multiplier):
-        delay = tempo_multiplier* note[1]
         frets = note[0]
-        open_strings = [str(fret[0] + "0") for fret in frets]
+        open_strings = [str(fret[0]+"0") for fret in frets]
         GPIO_frets = [self.GPIO_dict[fret] for fret in frets]
-        GPIO_strings = [self.GPIO_dict[open_string] for string in open_strings]
+        GPIO_strings = [self.GPIO_dict[string] for string in open_strings]
+        delay = note[1]
 
         curr_time = time.clock()
-        GPIO.output(GPIO_frets, GPIO.HIGH) # set the GPIO_fret HIGH
+        #GPIO.output(GPIO_frets, GPIO.HIGH) # set the GPIO_fret HIGH
+        print str(GPIO_frets) + ", " + str(delay) # comment this out when you actually play 
         time.sleep(0.05) # this gives time for the fret to be compressed before strumming
+        print str(GPIO_strings) + ", " + str(len(GPIO_strings))
         if len(GPIO_strings) > 1:
             for string in GPIO_strings:
-                GPIO.output(string, GPIO.HIGH)
+                #GPIO.output(string, GPIO.HIGH)
+                print "Plucking " + str(string) 
                 time.sleep(EPSILON)
-        else:
-           GPIO.output(GPIO_strings, GPIO.HIGH) 
+        #else:
+           #GPIO.output(GPIO_strings, GPIO.HIGH) 
         time.sleep(0.05)
-        GPIO.output(GPIO_strings, GPIO.LOW)
+        #GPIO.output(GPIO_strings, GPIO.LOW)
+        print "turning off string plucking solenoids"
         while time.clock() < curr_time + delay: {}
-        GPIO.output(GPIO_frets, GPIO.LOW)
- 
+        #GPIO.output(GPIO_frets, GPIO.LOW)
+        print "turning off fret solenoids"
 
 # class StringInstrument(object):
 #     """ A general string instrument
@@ -280,4 +287,11 @@ class Guitar(object):
 #         StringInstrument.__init__(self,base_strings=strs, notes_per_string=17,solenoids_per_string=n)
 #         self.setGPIO_dict()
     
-
+# np.array([None, [[18,"High"]], [[27,"High"]],[[22,"High"]],[[23,"High"]],
+#             None, [[24,"High"]], [[10,"High"]],[[9,"High"]] ,[[25,"High"]],
+#             None,[[11,"High"]],[[8,"High"]],[[7,"High"]],[[5,"High"]],
+#             None,[[6,"High"]],[[12,"High"]],[[13,"High"]], None,
+#             None,[[19, "Low"], [16, "Low"]],[[19, "High"], [16, "Low"]],
+#             [[19, "Low"], [16, "High"]],[[19, "High"], [16, "High"]],
+#             None,[[26, "Low"], [20, "Low"]],[[26, "High"], [20, "Low"]],
+#             [[26, "Low"], [20, "High"]],[[26, "High"], [20, "High"]]])
