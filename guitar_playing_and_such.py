@@ -1,5 +1,7 @@
 import numpy as np
 from Song import *
+from static.lib import *
+
 # import RPi.GPIO as GPIO # uncomment this when working on the Rasberry Pi
  
 # This is to be used on the Raspberry Pi
@@ -54,7 +56,7 @@ class StringInstrument(object):
             [[19, "Low"], [16, "High"]],[[19, "High"], [16, "High"]],
             None,[[26, "Low"], [20, "Low"]],[[26, "High"], [20, "Low"]],
             [[26, "Low"], [20, "High"]],[[26, "High"], [20, "High"]]])
-        self.GPIO_dict = self.setGPIO_dict()
+        self.GPIO_dict = dict()
     
     def get_all_notes(self):
         all_notes = []
@@ -76,16 +78,19 @@ class StringInstrument(object):
                 self.GPIO_dict[fret] = self.GPIO_list[j]
                 j += 1
     
-    def add_song(self, song):
+    def add_song(self, title, frets, durations, tempo):
         """ This assumes the user has not formatted the song in any way
         """
-        valid_frets = convert_notes(song.get_frets(), self)
-        title = song.get_title()
-        tempo = song.get_tempo()
-        note_types = song.get_note_types()
-        valid_song = Song(title, valid_frets, note_types, tempo) 
+   	valid_frets = convert_notes(frets, self)
+        valid_song = Song(title, valid_frets, durations, tempo) 
         self.songs_dict[title] = valid_song
-    
+	
+    def set_songs_dict(self):
+        self.songs_dict = dict()
+        self.add_song("ONE", ONE_FRETS, ONE_DURATIONS, 120)
+        self.add_song("TWO", TWO_FRETS, TWO_DURATIONS, 60)
+        self.add_song("THREE", THREE_FRETS, THREE_DURATIONS, 120)
+ 
     def get_songs_dict(self):
         return self.songs_dict
     
@@ -109,31 +114,35 @@ class StringInstrument(object):
         for note in actual_song:
             if note[-1] == "rest":
                 duration = tempo_multiplier * note[1]
-		print(str(note[0]) + ", " + str(duration) + ", " + (note[2:]))
+		print "rest for " + str(duration) + " seconds"
                 time.sleep(duration)
             elif note[-1] == "strum":
                 strum(note, GPIO_dict, tempo_multiplier)
             
-    def strum(self,note, GPIO_dict, tempo_multiplier):
+    def strum(self,note, tempo_multiplier):
         delay = tempo_multiplier * note[1]
         frets = note[0]
-        open_strings = fret[0]
-        GPIO_frets = [GPIO_dict[fret] for fret in frets]
-        GPIO_strings = [GPIO_dict[open_string] for string in open_strings]
+        open_strings = [str(fret[0]+"0") for fret in frets]
+        GPIO_frets = [self.GPIO_dict[fret] for fret in frets]
+        GPIO_strings = [self.GPIO_dict[open_string] for string in open_strings]
 
         curr_time = time.clock()
-        GPIO.output(GPIO_frets, GPIO.HIGH) # set the GPIO_fret HIGH
+        #GPIO.output(GPIO_frets, GPIO.HIGH) # set the GPIO_fret HIGH
+	print str(GPIO_frets) + ", " + str(delay) # comment this out when you actually play 
         time.sleep(0.05) # this gives time for the fret to be compressed before strumming
         if len(GPIO_strings) > 1:
             for string in GPIO_strings:
-                GPIO.output(string, GPIO.HIGH)
+                #GPIO.output(string, GPIO.HIGH)
+		print "Plucking " + str(string) 
                 time.sleep(EPSILON)
-        else:
-           GPIO.output(GPIO_strings, GPIO.HIGH) 
+        #else:
+           #GPIO.output(GPIO_strings, GPIO.HIGH) 
         time.sleep(0.05)
-        GPIO.output(GPIO_strings, GPIO.LOW)
+        #GPIO.output(GPIO_strings, GPIO.LOW)
+	print "turning off string plucking solenoids"
         while time.clock() < curr_time + delay: {}
-        GPIO.output(GPIO_frets, GPIO.LOW)
+        #GPIO.output(GPIO_frets, GPIO.LOW)
+	print "turning off fret solenoids"
     
         
 class Guitar(StringInstrument): 
@@ -141,6 +150,7 @@ class Guitar(StringInstrument):
         strs = np.array(["E", "A", "D", "G", "B", "e"])
         super(Guitar, self).__init__(base_strings=strs, notes_per_string=23,solenoids_per_string=n)
         self.setGPIO_dict()
+	self.set_songs_dict()
 
 
 class Ukulele(StringInstrument):

@@ -1,4 +1,4 @@
-import guitar_playing_and_such
+from guitar_playing_and_such import *
 import Song
 import time
 import re
@@ -16,7 +16,7 @@ handle : function
 	A funtion that performs actions when the text is valid
 """
 
-WORDS = ["PLAY ONE", "PLAY TWO","PLAY THREE"]
+WORDS = ["PLAY ONE"]#, "PLAY TWO","PLAY THREE"]
 
 def handle(text, mic, profile):
 	guitar = Guitar(n=4)
@@ -31,7 +31,9 @@ def handle(text, mic, profile):
 	print guitar.play_song(song_name, speed) 
 
 def isValid(text):
+	print "Getting songs"
 	cond1 = bool(re.search("play one", text, re.IGNORECASE))
-	cond2 = bool(re.search("play two", text, re.IGNORECASE))
-	cond3 = bool(re.search("play three", text, re.IGNORECASE))
-	return cond1 or cond2 or cond3
+	#cond2 = bool(re.search("play two", text, re.IGNORECASE))
+	#cond3 = bool(re.search("play three", text, re.IGNORECASE))
+	#return cond1 or cond2 or cond3
+	return cond1
