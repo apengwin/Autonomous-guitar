@@ -227,12 +227,15 @@ def valid_equivalent_note(fret, instrument, frets_to_notes, notes_to_valid_frets
     return None
 
 def convert_to_raw_arrays(notes):
+    #print(notes)
     note_arrays = []
     for note in notes:
         note_arrays += [note.split("+")]
     return note_arrays
 
 def convert_notes(raw_notes, instrument):
+    print "HI HI LOOK AT ME"
+    print raw_notes
     all_strings = instrument.get_all_notes()
     frets_to_notes = frets_to_notes_dict(all_strings)
     notes_to_valid_frets = notes_to_valid_frets_dict(all_strings)
@@ -245,3 +248,4 @@ def convert_notes(raw_notes, instrument):
             sub_notes += [valid_equivalent_note(raw_note, instrument, frets_to_notes, notes_to_valid_frets)]
         converted_notes += [sub_notes]
     return converted_notes
+
