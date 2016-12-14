@@ -141,13 +141,16 @@ class Guitar(object):
         GPIO.output(GPIO_frets, GPIO.HIGH) # set the GPIO_fret HIGH
         #print str(GPIO_frets) + ", " + str(delay) # comment this out when you actually play 
         time.sleep(0.05) # this gives time for the fret to be compressed before strumming
+        print "LOOK HERE" 
         for string in GPIO_strings:
+            print string
             GPIO.output(string, GPIO.HIGH)
             print "Plucking " + str(string) 
             if (len(GPIO_strings) > 1):
-                time.sleep(EPSILON)
-        time.sleep(EPSILON)
-        GPIO.output(GPIO_strings, GPIO.LOW)
+        	time.sleep(EPSILON)
+	    GPIO.output(string, GPIO.LOW)
+	#time.sleep(EPSILON)
+        #GPIO.output(GPIO_strings, GPIO.LOW)
         #print "turning off string plucking solenoids"
         while time.clock() < curr_time + delay: {}
         GPIO.output(GPIO_frets, GPIO.LOW)

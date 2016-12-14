@@ -12,7 +12,7 @@ def OneFretTest():
     basic_frets = ['E0', 'A0','D0']
     #clean_basic_frets = convert_notes(basic_frets, guitar)
     #print clean_basic_frets
-    basic_durations = ["quarter-note","quarter-note","quarter-note"]
+    basic_durations = ["eighth-note","quarter-note","eighth-note"]
     tempo = 120
     guitar.add_song("basic-one", basic_frets, basic_durations, tempo)
     print guitar.get_songs_dict()["basic-one"]
@@ -20,7 +20,7 @@ def OneFretTest():
 
 def TwoFretTest():
     ### Tests two actuating 2 frets at the same time
-    basic_frets = ["E0+A0"]
+    basic_frets = ["D0+A0"]
     #clean_basic_frets = convert_notes(basic_frets, guitar)
     basic_durations = ["quarter-note"]
     tempo = 120
@@ -30,13 +30,14 @@ def TwoFretTest():
 
 def ThreeFretTest():
     ### Tests two actuating 3 frets at the same time
-    basic_frets = ["E2+A2+D2"]
-    clean_basic_frets = convert_notes(basic_frets, guitar)
+    basic_frets = ["E0+A0+D0"]
+    #clean_basic_frets = convert_notes(basic_frets, guitar)
     basic_durations = ["quarter-note"]
     tempo = 120
-    song = guitar.add_song("basic-three", clean_basic_frets, basic_durations, tempo)
-    print(song.get_song())
-    #guitar.play("basic-three", "normal")
+    song = guitar.add_song("basic-three", basic_frets, basic_durations, tempo)
+    print guitar.get_songs_dict()["basic-three"]
+
+    guitar.play("basic-three", "normal")
 
 def FourFretTest():
     ### Tests two actuating 4 frets at the same time
@@ -105,10 +106,11 @@ def testEachFret():
 
 ############### Tests ##################
 
-OneFretTest()
-time.sleep(4)
+#OneFretTest()
+#time.sleep(4)
 TwoFretTest()
-#ThreeFretTest()
+time.sleep(4)
+ThreeFretTest()
 #FourFretTest()
 #FiveFretTest()
 #SixFretTest()
