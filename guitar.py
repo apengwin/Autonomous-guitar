@@ -4,12 +4,12 @@ from Song import *
 from static.lib import *
 import time
 
-# import RPi.GPIO as GPIO # uncomment this when working on the Rasberry Pi
+ import RPi.GPIO as GPIO # uncomment this when working on the Rasberry Pi
  
 # This is to be used on the Raspberry Pi
-# GPIO.setmode(GPIO.BOARD)
-# chan_list = [18,27,22,23,24,10,9,25,11,8,7,5,6,12,13,19,16,26,20,21,1,2,3,4,14,15,17]
-# GPIO.setup(chan_list, GPIO.OUT, initial=GPIO.LOW)
+GPIO.setmode(GPIO.BOARD)
+chan_list = [18,27,22,23,24,10,9,25,11,8,7,5,6,12,13,19,16,26,20,21,1,2,3,4,14,15,17]
+GPIO.setup(chan_list, GPIO.OUT, initial=GPIO.LOW)
 # """
 # ##### Example of setting pins HIGH #######
 # ##### ---------------------------- #######
@@ -124,7 +124,10 @@ class Guitar(object):
             elif note[-1] == "strum":
                 self.strum(note, speed)
 
-            
+    def cleanup(self):
+        GPIO.output(chan_list, GPIO.LOW)
+        GPIO.cleanup()
+
     def strum(self,note, tempo_multiplier):
         frets = note[0]
         open_string_to_GPIO = {"E": 2, "A":3, "D":4, "G":14, "B":15, "e":17}

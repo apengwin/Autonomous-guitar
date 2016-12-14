@@ -13,9 +13,9 @@ def OneFretTest():
     clean_basic_frets = convert_notes(basic_frets, guitar)
     basic_durations = ["quarter-note"]
     tempo = 120
-    song = Song("Basic", clean_basic_frets, basic_durations, tempo)
-    print(song.get_song())
-    #guitar.play(song)
+    song = guitar.add_song("basic-one", clean_basic_frets, basic_durations, tempo)
+    #print(song.get_song())
+    guitar.play("basic-one", "normal")
 
 def TwoFretTest():
     ### Tests two actuating 2 frets at the same time
@@ -23,9 +23,9 @@ def TwoFretTest():
     clean_basic_frets = convert_notes(basic_frets, guitar)
     basic_durations = ["quarter-note"]
     tempo = 120
-    song = Song("Basic", clean_basic_frets, basic_durations, tempo)
-    print(song.get_song())
-    #guitar.play(song)
+    song = guitar.add_song("basic-two", clean_basic_frets, basic_durations, tempo)
+    #print(song.get_song())
+    guitar.play("basic-two", "normal")
 
 def ThreeFretTest():
     ### Tests two actuating 3 frets at the same time
@@ -33,9 +33,9 @@ def ThreeFretTest():
     clean_basic_frets = convert_notes(basic_frets, guitar)
     basic_durations = ["quarter-note"]
     tempo = 120
-    song = Song("Basic", clean_basic_frets, basic_durations, tempo)
-    print(song.get_song())
-    #guitar.play(song)
+    song = guitar.add_song("basic-three", clean_basic_frets, basic_durations, tempo)
+    #print(song.get_song())
+    guitar.play("basic-three", "normal")
 
 def FourFretTest():
     ### Tests two actuating 4 frets at the same time
@@ -43,9 +43,9 @@ def FourFretTest():
     clean_basic_frets = convert_notes(basic_frets, guitar)
     basic_durations = ["quarter-note"]
     tempo = 120
-    song = Song("Basic", clean_basic_frets, basic_durations, tempo)
-    print(song.get_song())
-    #guitar.play(song)
+    song = guitar.add_song("basic-four", clean_basic_frets, basic_durations, tempo)
+    #print(song.get_song())
+    guitar.play("basic-four", "normal")
 
 def FiveFretTest():
     ### Tests two actuating 5 frets at the same time
@@ -53,9 +53,9 @@ def FiveFretTest():
     clean_basic_frets = convert_notes(basic_frets, guitar)
     basic_durations = ["quarter-note"]
     tempo = 120
-    song = Song("Basic", clean_basic_frets, basic_durations, tempo)
-    print(song.get_song())
-    #guitar.play(song)
+    song = guitar.add_song("basic-five", clean_basic_frets, basic_durations, tempo)
+    #print(song.get_song())
+    guitar.play("basic-five", "normal")
 
 def SixFretTest():
     ### Tests two actuating 6 frets at the same time
@@ -63,9 +63,9 @@ def SixFretTest():
     clean_basic_frets = convert_notes(basic_frets, guitar)
     basic_durations = ["quarter-note"]
     tempo = 120
-    song = Song("Basic", clean_basic_frets, basic_durations, tempo)
-    print(song.get_song())
-    #guitar.play(song)
+    song = guitar.add_song("basic-six", clean_basic_frets, basic_durations, tempo)
+    #print(song.get_song())
+    guitar.play("basic-six", "normal")
 
 def TwoNoteSongTest():
     ### Tests a song with 2 notes and 1 rest in between
@@ -73,9 +73,9 @@ def TwoNoteSongTest():
     clean_basic_frets = convert_notes(basic_frets, guitar)
     basic_durations = ["quarter-note","quarter-rest", "quarter-note"]
     tempo = 120
-    song = Song("Basic", clean_basic_frets, basic_durations, tempo)
-    print(song.get_song())
-    #guitar.play(song) 
+    song = guitar.add_song("two-note", clean_basic_frets, basic_durations, tempo)
+    #print(song.get_song())
+    guitar.play("two-note", "normal") 
 
 def testEachFret():
     ### Playing a sequence where every possible fret is played once
@@ -96,9 +96,10 @@ def testEachFret():
                        "quarter-note","quarter-note","quarter-note",
                        "quarter-note","quarter-note","quarter-note",
                        "quarter-note","quarter-note","quarter-note"]
-    tempo = 60
-    song = Song("Test All", clean_basic_frets, basic_durations, tempo)
-    print(song.get_song())
+    tempo = 120
+    song = guitar.add_song("testEachFret", clean_basic_frets, basic_durations, tempo)
+    #print(song.get_song())
+    guitar.play("testEachFret", "normal")
 
 
 ############### Tests ##################
@@ -110,7 +111,7 @@ def testEachFret():
 #FiveFretTest()
 #SixFretTest()
 #TwoNoteSongTest()
-testEachFret()
+#testEachFret()
 
 
 

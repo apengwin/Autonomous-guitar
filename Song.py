@@ -29,24 +29,30 @@ class Song(object):
         the title of the song
     frets : array of String arrays
         A tab converted to an array of String arrays
-    note_types : array of float arrays
+        Looks like ["E0", "B0"]
+    note_times : array of strings
         An array of note types corresponding to the frets (e.g. quarter, half)
+        Also includes rests.
+        Looks like ["eight-note", "quarter-note",...]
+    durations : array of floats
+        Converted from note_times and tempo
+        Looks like [0.5, 1, ....]
     tempo : int
         the tempo of a song (beats/min)
     """
-    def __init__(self, title, frets, note_types, tempo=0):
+    def __init__(self, title, frets, note_times, tempo=0):
         self.title = title
         self.frets = frets
-        self.tempo = tempo
-        self.note_types = note_types
-        self.durations = self.find_durations(note_types, tempo)
+        self.tempo = tempo  
+        self.note_times = note_times
+        self.durations = self.find_durations(note_times, tempo)
         self.song = self.make_song()
     
     def get_title(self):
         return self.title
     
-    def get_note_types(self):
-        return self.note_types
+    def get_note_times(self):
+        return self.note_times
     
     def get_song(self):
         return self.song
@@ -99,12 +105,14 @@ class Song(object):
                 actions.append("rest")
             else:
                 print("Input " + note_or_rest + " is not actionable.")
-                return None
+                raise 
         return actions
 
     def make_song(self):
-        actions = self.find_actions(self.note_types)
+        actions = self.find_actions(self.note_times)
         durations = self.durations
+        if len(durations) != len(actions):
+            raise Exception("number of actions not equal to number of durations")
         song_actions = []
         i = 0 # counter for frets
         j = 0 # counter for durations
