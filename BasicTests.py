@@ -24,8 +24,8 @@ def OneStringTest():
     basic_durations = ["eighth-note","quarter-note","eighth-note"]
     tempo = 120
     guitar.add_song("basic-one", basic_frets, basic_durations, tempo)
-    print guitar.get_songs_dict()["basic-one"]
-    #guitar.play("basic-one", "normal")
+    #print guitar.get_songs_dict()["basic-one"]
+    guitar.play("basic-one", "normal")
 
 def TwoStringTest():
     ### Tests two actuating 2 frets at the same time
@@ -163,9 +163,9 @@ def TwoNoteSongTest():
 
 ############### Tests ##################
 
-OneFretTest()
-#time.sleep(4)
-#TwoFretTest()
+OneStringTest()
+time.sleep(4)
+TwoStringTest()
 #time.sleep(4)
 #ThreeFretTest()
 #FourFretTest()

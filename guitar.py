@@ -133,12 +133,13 @@ class Guitar(object):
     
     def setup(self):
 	GPIO.setmode(GPIO.BOARD)
-        #chan_list = [3,5,7,8,10,11,12,13,15,16,18,19,21,22,23,24,26]#,28,29,31,32,33,35,36,37,38,40]
-        for channel in self.chan_list:
-	    try:
-    	         GPIO.setup(channel, GPIO.OUT, initial=GPIO.LOW)
-            except ValueError:
-                 print "messed up on channel " + str(channel)
+        GPIO.setup(self.chan_list, GPIO.OUT, initial=GPIO.LOW)
+	#chan_list = [3,5,7,8,10,11,12,13,15,16,18,19,21,22,23,24,26]#,28,29,31,32,33,35,36,37,38,40]
+        #for channel in self.chan_list:
+	#    try:
+    	#         GPIO.setup(channel, GPIO.OUT, initial=GPIO.LOW)
+        #    except ValueError:
+        #         print "messed up on channel " + str(channel)
 
     def strum(self,note, tempo_multiplier):
         frets = note[0]
@@ -157,8 +158,8 @@ class Guitar(object):
             print string
             GPIO.output(string, GPIO.HIGH)
             print "Plucking " + str(string) 
-            if (len(GPIO_strings) > 1):
-        	time.sleep(EPSILON)
+            #if (len(GPIO_strings) > 1):
+            time.sleep(EPSILON)
 	    GPIO.output(string, GPIO.LOW)
 	#time.sleep(EPSILON)
         #GPIO.output(GPIO_strings, GPIO.LOW)
