@@ -7,9 +7,9 @@ import time
 import RPi.GPIO as GPIO # uncomment this when working on the Rasberry Pi
  
 # This is to be used on the Raspberry Pi
-#GPIO.setmode(GPIO.BOARD)
-#chan_list = [3,5,7,8,10,11,12,13,15,16,18,19,21,22,23,24,26,28,29,31,32,33,35,36,37,38,40]
-#GPIO.setup(chan_list, GPIO.OUT, initial=GPIO.LOW)
+GPIO.setmode(GPIO.BOARD)
+chan_list = [3,5,7,8,10,11,12,13,15,16,18,19,21,22,23,24,26,29,31,32,33,35,36,37,38,40]
+GPIO.setup(chan_list, GPIO.OUT, initial=GPIO.LOW)
 # """
 # ##### Example of setting pins HIGH #######
 # ##### ---------------------------- #######
@@ -77,11 +77,11 @@ class Guitar(object):
         j = 0
         for string in self.base_strings:
             for i in range(self.solenoids_per_string + 1):
-                if string == "e" and i == 4:
+               if string == "e" and i == 4:
 		   continue
-		fret = string[0] + str(i)
-                self.GPIO_dict[fret] = self.GPIO_list[j]
-                j += 1
+	       fret = string[0] + str(i)
+               self.GPIO_dict[fret] = self.GPIO_list[j]
+               j += 1
         return self.GPIO_dict
     
     def add_song(self, title, frets, durations, tempo):
@@ -118,7 +118,7 @@ class Guitar(object):
         elif speed == "slow":
             tempo_multiplier = 1.5
          
-        # print actual_song   
+        print actual_song   
         for note in actual_song:
             if note[-1] == "rest":
                 duration = tempo_multiplier * note[1]

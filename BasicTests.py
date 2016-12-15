@@ -7,21 +7,21 @@ from guitar import *
 from Song import *
 import time
 guitar = Guitar(4)
-guitar.setup()
+
 
 ##################################
 ######### String Tests #############
 ##################################
 def allStringTest():
     basic_frets = ['E0','A0','D0','G0','B0','e0']
-    basic_durations = ["quarter-note","quarter-note","quarter-note","quarter-note","quarter-note","quarter-note"]
+    basic_durations = ["quarter-note-dotted","eighth-note","quarter-note","quarter-note","quarter-note","quarter-note"]
     tempo = 120
     guitar.add_song("all-strings", basic_frets, basic_durations, tempo)
     guitar.play("all-strings", "normal")
 
 def OneStringTest():
-    basic_frets = ['E0', 'A0','D0']
-    basic_durations = ["eighth-note","quarter-note","eighth-note"]
+    basic_frets = ['E0+A0+D0+G0+B0+e0']
+    basic_durations = ["quarter-note"]
     tempo = 120
     guitar.add_song("basic-one", basic_frets, basic_durations, tempo)
     #print guitar.get_songs_dict()["basic-one"]
@@ -29,7 +29,7 @@ def OneStringTest():
 
 def TwoStringTest():
     ### Tests two actuating 2 frets at the same time
-    basic_frets = ["D0+A0"]
+    basic_frets = ["D0"]
     basic_durations = ["quarter-note"]
     tempo = 120
     guitar.add_song("basic-two", basic_frets, basic_durations, tempo)
@@ -162,10 +162,11 @@ def TwoNoteSongTest():
 
 
 ############### Tests ##################
-
+allStringTest()
+time.sleep(2)
 OneStringTest()
-time.sleep(4)
-TwoStringTest()
+#time.sleep(4)
+#TwoStringTest()
 #time.sleep(4)
 #ThreeFretTest()
 #FourFretTest()
@@ -173,7 +174,7 @@ TwoStringTest()
 #SixFretTest()
 #TwoNoteSongTest()
 #testEachFret()
-guitar.cleanup()
+
 
 
 
