@@ -96,6 +96,7 @@ class Guitar(object):
         self.add_song("LANDSLIDE", LANDSLIDE_FRETS, LANDSLIDE_DURATIONS, 144)
         self.add_song("DAY TRIPPER", DAY_TRIPPER_FRETS, DAY_TRIPPER_DURATION, 142)
         self.add_song("HOTEL CALIFORNIA", hotel_frets, HOTEL_LENGTH, 73)
+	self.add_song("SEVEN NATION ARMY", SEVEN_NATION_ARMY_FRETS, SEVEN_NATION_ARMY_DURATION, 120)
         return self.songs_dict
 
     def get_songs_dict(self):
@@ -112,6 +113,7 @@ class Guitar(object):
     
     def play(self, song_name, speed):
         actual_song = self.songs_dict[song_name]
+        print "Playing %s, at %s speed" % (song_name, speed)
         tempo_multiplier = 1
         if speed == "fast":
             tempo_multiplier = 0.5

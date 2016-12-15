@@ -28,8 +28,10 @@ def test():
 def play(song_name, speed):
 	guitar = Guitar(4)
 	signal.signal(signal.SIGTERM, term_cleanup)
-	print "Playing " + song_name +" at " + str(speed) + " speed."
-	print guitar.play(song_name, speed) 
+        try:
+		print guitar.play(song_name, speed) 
+	except KeyError:
+		print "I'm sorry. I don't know that song"
 
 def handle(text, mic, profile):
         # make this more sophisticated

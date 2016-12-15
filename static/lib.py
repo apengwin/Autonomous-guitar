@@ -26,21 +26,21 @@ DAY_TRIPPER_FRETS = ["E0","E3", "E4", "A2", "D2", "D0", "A2", "D4", "A2", "D0", 
 		     "E0","E3", "E4", "A2", "D2", "D0", "A2", "D4", "A2", "D0", "D2"]
       
 
-DAY_TRIPPER_DURATION = ["quarter-note","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
-						"quarter-note","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
-						"quarter-note","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
-						"quarter-note","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
-						"quarter-note","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
-						"quarter-note","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
-						"quarter-note","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
-						"quarter-note","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
-						"quarter-note","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
+DAY_TRIPPER_DURATION = ["quarter-note-dotted","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note-dotted","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
+						"quarter-note-dotted","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note-dotted","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
+						"quarter-note-dotted","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note-dotted","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
+						"quarter-note-dotted","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note-dotted","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
+						"quarter-note-dotted","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note-dotted","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
+						"quarter-note-dotted","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note-dotted","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
+						"quarter-note-dotted","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note-dotted","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
+						"quarter-note-dotted","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note-dotted","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
+						"quarter-note-dotted","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note-dotted","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
 
                                                 'quarter-note', 'eighth-note', 'eighth-note', 'quarter-note', 'eighth-note', 'eighth-note', 'quarter-note', 'eighth-note', 'eighth-note', 'sixteenth-note', 'sixteenth-note', 'eighth-note', 'eighth-note', 'eighth-note', 
 						'quarter-note', 'eighth-note', 'eighth-note', 'eighth-rest', 'eighth-note', 'eighth-rest', 'eighth-note', 'eighth-note', 'eighth-note', 'eighth-note', 'eighth-note', 'eighth-note', 'eighth-note', 'eighth-note', 'eighth-note',
 						'quarter-note', 'eighth-note', 'eighth-note', 'eighth-rest', 'eighth-note', 'eighth-rest', 'eighth-note', 'quarter-note', 'eighth-note', 'eighth-note', 'quarter-note', 'quarter-note',
 						'quarter-note', 'quarter-note', 'quarter-note', 'eighth-note', 'eighth-note', 'quarter-note', 'quarter-note', 'eighth-note', 'eighth-note', 'quarter-note',
-						"quarter-note","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note"]
+						"quarter-note-dotted","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note-dotted","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note"]
 
 
 
@@ -111,6 +111,15 @@ BLAKBIRD_NOTES = ["E3+B0", "G0", "A0+B1", "G0", "A2+B3", "G0", "A10+B12", "G0", 
     "D0+B1", "G0", "B1", "D0", "B1", "G0", "B1",
 ]
 
+
+SEVEN_NATION_ARMY_RIFF = ["A7", "A7", "A10", "A7", "A5", "A3", "A2"]
+SEVEN_NATION_ARMY_BASE = ["quarter-note-dotted", "eighth-note", "triplet-note", "triplet-note", "triplet-note", "half-note", "half-note"]
+
+SEVEN_NATION_FILL = ["A7", "A7", "A10", "A7", "A5", "A3", "A5", "A3", "A2"]
+SEVEN_NATION_FILL_DURATION = ["quarter-note-dotted", "eighth-note", "triplet-note", "triplet-note", "triplet-note", "triplet-note", "triplet-note", "triplet-note", "half-note"]
+
+SEVEN_NATION_ARMY_FRETS = SEVEN_NATION_ARMY_RIFF * 2 + SEVEN_NATION_FILL + SEVEN_NATION_ARMY_RIFF
+SEVEN_NATION_ARMY_DURATION = SEVEN_NATION_ARMY_BASE * 2 + SEVEN_NATION_FILL_DURATION + SEVEN_NATION_ARMY_BASE
 
 
  #hotel california

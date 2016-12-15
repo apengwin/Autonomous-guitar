@@ -3,8 +3,8 @@ import numpy as np
 #from guitar import *
  
 PREFIX_LIST = ["large","long","breve","whole","half","quarter",
-             "eighth","sixteenth","thirtysecond"]
-MULTIPLIER_LIST = [32, 16, 8, 4, 2, 1, 1/2, 1/4, 1/8]
+             "eighth","sixteenth","thirtysecond", "triplet", "doubletriplet"]
+MULTIPLIER_LIST = [32, 16, 8, 4, 2, 1, 1/2, 1/4, 1/8, 2/3, 4/3]
 POSTFIX_LIST = ["dotted"]
 NOTE_LIST = [prefix + "-note" for prefix in PREFIX_LIST]
 NOTE_LIST = NOTE_LIST + [note +"-"+ postfix for postfix in POSTFIX_LIST for note in NOTE_LIST]

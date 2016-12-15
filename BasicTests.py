@@ -6,15 +6,15 @@
 from guitar import *
 from Song import *
 import time
-guitar = Guitar(4)
+#guitar = Guitar(4)
 
 
 ##################################
 ######### String Tests #############
 ##################################
 def allStringTest():
-    basic_frets = ['E1','A1','D1','G1','B1','e1']
-    basic_durations = ["quarter-note","quarter-note","quarter-note","quarter-note","quarter-note","quarter-note"]
+    basic_frets = ['E0','A0','D0','G0','B0','e0']
+    basic_durations = ["quarter-note","quarter-note","quarter-note","triplet-note","triplet-note","triplet-note"]
     tempo = 120
     guitar.add_song("all-strings", basic_frets, basic_durations, tempo)
     guitar.play("all-strings", "normal")
@@ -176,12 +176,18 @@ def test_DAYTRIPPER():
 #SixFretTest()
 #TwoNoteSongTest()
 #testEachFret()
-test_DAYTRIPPER()
+#test_DAYTRIPPER()
 #guitar.play("HOTEL CALIFORNIA", "normal")
 #guitar.play("LANDSLIDE", "normal")
 
 
 
 
+#guitar.play("SEVEN NATION ARMY", "normal")
 
 
+#allStringTest()
+
+
+
+#test_DAYTRIPPER()
