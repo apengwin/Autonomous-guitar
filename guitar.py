@@ -7,9 +7,9 @@ import time
 import RPi.GPIO as GPIO # uncomment this when working on the Rasberry Pi
  
 # This is to be used on the Raspberry Pi
-GPIO.setmode(GPIO.BOARD)
-chan_list = [3,5,7,8,10,11]#,12,13,15,16,18,19,21,22,23,24,26,28,29,31,32,33,35,36,37,38,40]
-GPIO.setup(chan_list, GPIO.OUT, initial=GPIO.LOW)
+#GPIO.setmode(GPIO.BOARD)
+#chan_list = [3,5,7,8,10,11,12,13,15,16,18,19,21,22,23,24,26,28,29,31,32,33,35,36,37,38,40]
+#GPIO.setup(chan_list, GPIO.OUT, initial=GPIO.LOW)
 # """
 # ##### Example of setting pins HIGH #######
 # ##### ---------------------------- #######
@@ -51,14 +51,15 @@ class Guitar(object):
         self.notes_per_string = 23
         self.songs_dict = dict()
         self.set_songs_dict()
-        self.GPIO_list = np.array([[], [18], [27],[22],[23],
-            [], [24], [10],[9] ,[25],
-            [],[11],[8],[7],[5],
-            [],[6],[12],[13],[],
-            [],[19],[16], [19,16], [26],
-            [],[20],[21],[20,21],[1]])
+        self.GPIO_list = np.array([[], [12], [13],[15],[16],
+            [], [18], [19],[21],[22],
+            [],[23],[24],[26],[29],
+            [],[31],[32],[33],[],
+            [],[35],[36], [35,36],[37],
+            [],[38],[40],[38,40]])
         self.GPIO_dict = dict()
         self.setGPIO_dict()
+	self.chan_list = [3,5,7,8,10,11,12,13,15,16,18,19,21,22,23,24,26,29,31,32,33,35,36,37,38,40]
     
     def get_all_notes(self):
         all_notes = []
@@ -66,7 +67,7 @@ class Guitar(object):
             string_notes = []
             string_start = np.where(NOTES == string.upper())[0][0]
             for i in range(self.notes_per_string):
-                next_note = (string_start + i) % len(NOTES)
+		next_note = (string_start + i) % len(NOTES)
                 string_notes.append(NOTES[next_note])
             all_notes.append([string_notes])
         return all_notes
@@ -76,7 +77,9 @@ class Guitar(object):
         j = 0
         for string in self.base_strings:
             for i in range(self.solenoids_per_string + 1):
-                fret = string[0] + str(i)
+                if string == "e" and i == 4:
+		   continue
+		fret = string[0] + str(i)
                 self.GPIO_dict[fret] = self.GPIO_list[j]
                 j += 1
         return self.GPIO_dict
@@ -90,9 +93,9 @@ class Guitar(object):
     
     def set_songs_dict(self):
         self.songs_dict = dict()
-        self.add_song("ONE", ONE_FRETS, ONE_DURATIONS, 120)
-        self.add_song("TWO", TWO_FRETS, TWO_DURATIONS, 60)
-        self.add_song("THREE", THREE_FRETS, THREE_DURATIONS, 120)
+        self.add_song("LANDSLIDE", LANDSLIDE_FRETS, LANDSLIDE_DURATIONS, 144)
+        self.add_song("DAY TRIPPER", DAY_TRIPPER_FRETS, DAY_TRIPPER_DURATION, 142)
+        self.add_song("HOTEL CALIFORNIA", hotel_frets, HOTEL_LENGTH, 73)
         return self.songs_dict
 
     def get_songs_dict(self):
@@ -125,8 +128,17 @@ class Guitar(object):
                 self.strum(note, speed)
 
     def cleanup(self):
-        GPIO.output(chan_list, GPIO.LOW)
+        GPIO.output(self.chan_list, GPIO.LOW)
         GPIO.cleanup()
+    
+    def setup(self):
+	GPIO.setmode(GPIO.BOARD)
+        #chan_list = [3,5,7,8,10,11,12,13,15,16,18,19,21,22,23,24,26]#,28,29,31,32,33,35,36,37,38,40]
+        for channel in self.chan_list:
+	    try:
+    	         GPIO.setup(channel, GPIO.OUT, initial=GPIO.LOW)
+            except ValueError:
+                 print "messed up on channel " + str(channel)
 
     def strum(self,note, tempo_multiplier):
         frets = note[0]
@@ -141,7 +153,6 @@ class Guitar(object):
         GPIO.output(GPIO_frets, GPIO.HIGH) # set the GPIO_fret HIGH
         #print str(GPIO_frets) + ", " + str(delay) # comment this out when you actually play 
         time.sleep(0.05) # this gives time for the fret to be compressed before strumming
-        print "LOOK HERE" 
         for string in GPIO_strings:
             print string
             GPIO.output(string, GPIO.HIGH)

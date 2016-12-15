@@ -159,6 +159,8 @@ def notes_to_valid_frets_dict(all_strings):
             seen_E = True
 
         for note in string[0][:5]:
+            if letter == 'e' and i == 4:
+	        continue
             fret_str = letter + str(i) 
             if note in notes_to_valid_frets:
                 notes_to_valid_frets[note] += [fret_str]
@@ -223,8 +225,8 @@ def valid_equivalent_note(fret, instrument, frets_to_notes, notes_to_valid_frets
         for valid_fret in valid_frets:
             if fret2Values[fret] <= fret2Values[valid_fret]:
                 return valid_fret
-    print("Error: Cannot play that note")
-    return None
+    
+    raise Exception("Error: Cannot play note " + fret)
 
 def convert_to_raw_arrays(notes):
     #print(notes)
@@ -234,8 +236,6 @@ def convert_to_raw_arrays(notes):
     return note_arrays
 
 def convert_notes(raw_notes, instrument):
-    print "HI HI LOOK AT ME"
-    print raw_notes
     all_strings = instrument.get_all_notes()
     frets_to_notes = frets_to_notes_dict(all_strings)
     notes_to_valid_frets = notes_to_valid_frets_dict(all_strings)
