@@ -156,7 +156,8 @@ class Guitar(object):
 	#print gpio_frets
         gpio_strings = [open_string_to_gpio[fret[0]] for fret in frets]
         delay = note[1]
-
+        print "HARAMBE HARAMBE HARAMBE" 
+        print delay
         curr_time = time.clock()
         GPIO.output(gpio_frets, GPIO.HIGH) # set the gpio_fret high
         counter = 0
@@ -174,7 +175,7 @@ class Guitar(object):
 	#time.sleep(epsilon)
         #gpio.output(gpio_strings, gpio.low)
         #print "turning off string plucking solenoids"
-        while time.clock() < curr_time + delay: {}
+        while time.clock() < curr_time + delay: pass
         GPIO.output(gpio_frets, GPIO.LOW)
 #        print "turning off fret solenoids"
 

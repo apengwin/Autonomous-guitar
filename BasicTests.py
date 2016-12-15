@@ -6,7 +6,7 @@
 from guitar import *
 from Song import *
 import time
-#guitar = Guitar(4)
+guitar = Guitar(4)
 
 
 ##################################
@@ -176,7 +176,7 @@ def test_DAYTRIPPER():
 #SixFretTest()
 #TwoNoteSongTest()
 #testEachFret()
-#test_DAYTRIPPER()
+test_DAYTRIPPER()
 #guitar.play("HOTEL CALIFORNIA", "normal")
 #guitar.play("LANDSLIDE", "normal")
 
