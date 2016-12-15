@@ -156,8 +156,6 @@ class Guitar(object):
 	#print gpio_frets
         gpio_strings = [open_string_to_gpio[fret[0]] for fret in frets]
         delay = note[1]
-        print "HARAMBE HARAMBE HARAMBE" 
-        print delay
         curr_time = time.clock()
         GPIO.output(gpio_frets, GPIO.HIGH) # set the gpio_fret high
         counter = 0
