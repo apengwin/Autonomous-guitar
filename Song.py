@@ -1,9 +1,10 @@
+from __future__ import division
 import numpy as np
-from guitar_playing_and_such import *
+#from guitar import *
  
 PREFIX_LIST = ["large","long","breve","whole","half","quarter",
-             "eighth","sixteenth","thirtysecond"]
-MULTIPLIER_LIST = [32, 16, 8, 4, 2, 1, 1/2, 1/4, 1/8]
+             "eighth","sixteenth","thirtysecond", "triplet", "doubletriplet"]
+MULTIPLIER_LIST = [32, 16, 8, 4, 2, 1, 1/2, 1/4, 1/8, 2/3, 4/3]
 POSTFIX_LIST = ["dotted"]
 NOTE_LIST = [prefix + "-note" for prefix in PREFIX_LIST]
 NOTE_LIST = NOTE_LIST + [note +"-"+ postfix for postfix in POSTFIX_LIST for note in NOTE_LIST]
@@ -28,24 +29,30 @@ class Song(object):
         the title of the song
     frets : array of String arrays
         A tab converted to an array of String arrays
-    note_types : array of float arrays
+        Looks like ["E0", "B0"]
+    note_times : array of strings
         An array of note types corresponding to the frets (e.g. quarter, half)
+        Also includes rests.
+        Looks like ["eight-note", "quarter-note",...]
+    durations : array of floats
+        Converted from note_times and tempo
+        Looks like [0.5, 1, ....]
     tempo : int
         the tempo of a song (beats/min)
     """
-    def __init__(self, title, frets, note_types, tempo=0):
+    def __init__(self, title, frets, note_times, tempo=0):
         self.title = title
         self.frets = frets
-        self.tempo = tempo
-        self.note_types = note_types
-        self.durations = self.find_durations(note_types, tempo)
+        self.tempo = tempo  
+        self.note_times = note_times
+        self.durations = self.find_durations(note_times, tempo)
         self.song = self.make_song()
     
     def get_title(self):
         return self.title
     
-    def get_note_types(self):
-        return self.note_types
+    def get_note_times(self):
+        return self.note_times
     
     def get_song(self):
         return self.song
@@ -98,12 +105,14 @@ class Song(object):
                 actions.append("rest")
             else:
                 print("Input " + note_or_rest + " is not actionable.")
-                return None
+                raise 
         return actions
 
     def make_song(self):
-        actions = self.find_actions(self.note_types)
+        actions = self.find_actions(self.note_times)
         durations = self.durations
+        if len(durations) != len(actions):
+            raise Exception("number of actions not equal to number of durations")
         song_actions = []
         i = 0 # counter for frets
         j = 0 # counter for durations
@@ -150,6 +159,8 @@ def notes_to_valid_frets_dict(all_strings):
             seen_E = True
 
         for note in string[0][:5]:
+            if letter == 'e' and i == 4:
+	        continue
             fret_str = letter + str(i) 
             if note in notes_to_valid_frets:
                 notes_to_valid_frets[note] += [fret_str]
@@ -214,10 +225,11 @@ def valid_equivalent_note(fret, instrument, frets_to_notes, notes_to_valid_frets
         for valid_fret in valid_frets:
             if fret2Values[fret] <= fret2Values[valid_fret]:
                 return valid_fret
-    print("Error: Cannot play that note")
-    return None
+    
+    raise Exception("Error: Cannot play note " + fret)
 
 def convert_to_raw_arrays(notes):
+    #print(notes)
     note_arrays = []
     for note in notes:
         note_arrays += [note.split("+")]
@@ -236,3 +248,4 @@ def convert_notes(raw_notes, instrument):
             sub_notes += [valid_equivalent_note(raw_note, instrument, frets_to_notes, notes_to_valid_frets)]
         converted_notes += [sub_notes]
     return converted_notes
+

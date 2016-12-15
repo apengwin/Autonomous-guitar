@@ -1,6 +1,10 @@
-import guitar_playing_and_such
+from guitar import *
 import Song
+import time
 import re
+from multiprocessing import Process
+import sys
+import signal
 
 """ 
 File that will use Jasper API to control the robot
@@ -15,21 +19,54 @@ handle : function
 	A funtion that performs actions when the text is valid
 """
 
-WORDS = ["Pi", "example", "google"]
+WORDS = ["PLAY"]#, "PLAY TWO","PLAY THREE"]
+guitar_process = None
+
+def test():
+        guitar = Guitar(4)
+
+def play(song_name, speed):
+	guitar = Guitar(4)
+	signal.signal(signal.SIGTERM, term_cleanup)
+        try:
+		print guitar.play(song_name, speed) 
+	except KeyError:
+		print "I'm sorry. I don't know that song"
 
 def handle(text, mic, profile):
-	if bool(re.search("Pi", text, re.IGNORECASE)):
-		print("How can I help you?")
-		command = mic.activeListen()
+        # make this more sophisticated
+	print "I'm in handle"
+	song_name = " ".join(text.split()[1:])
+	global guitar_process
+        if text.split()[0] == "PLAY":
+		print "Alright"
+		print "How fast would you like to play? (slow/normal/fast)"
+       #		print guitar.get_all_notes()
+		time.sleep(1)
+		speed = mic.activeListen()
+		if speed == None:
+			speed = "normal"
+                guitar_process = Process(target=play, args=(song_name, speed))
+                print "yeah"
+                guitar_process.start()
+        elif text.split()[0] == "STOP":
+        	print "HIIII"
+		if guitar_process != None:     
+			print "attempting to stop guitar"
+			guitar_process.terminate()
+			guitar_process = None
+	else:
+		pass
 
-	if bool(re.search("Play", text, re.IGNORECASE)):
-		print("OK")
-
+def term_cleanup(signal, frame):
+        print "stopping"
+	frame.f_locals["guitar"].cleanup()
+	sys.exit(1)
 
 def isValid(text):
-	cond1 = bool(re.search("Pi", text, re.IGNORECASE))
-	cond2 = bool(re.search(r'\bPi\b', text, re.IGNORECASE))
+	print "Getting songs"
+	cond1 = bool(re.search("play", text, re.IGNORECASE))
+	cond2 = bool(re.search("stop", text, re.IGNORECASE))
+	#cond3 = bool(re.search("play three", text, re.IGNORECASE))
+	#return cond1 or cond2 or cond3
 	return cond1 or cond2
-
-
-print(isValid("Pi"))
