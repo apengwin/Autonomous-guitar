@@ -18,12 +18,14 @@ DAY_TRIPPER_FRETS = ["E0","E3", "E4", "A2", "D2", "D0", "A2", "D4", "A2", "D0", 
 		     "E0","E3", "E4", "A2", "D2", "D0", "A2", "D4", "A2", "D0", "D2",
 		     "A0","A3", "A4", "D2", "G2", "G0", "D2", "G4", "D2", "G0", "G2",
 		     "E0","E3", "E4", "A2", "D2", "D0", "A2", "D4", "A2", "D0", "D2",
-		     "E2+A4", "E2+A4","E2+A4","E2+A4","E2+A4","E2+A4","E2+A4","E2+A4",
-	             "E2+A4","E2+A4","E2+A4","E2+A4","E2+A4","E2+A4","E2+A4","E2+A4",
-		     "E7+A7", "E7+A7","E7+A7","E7+A7","E2+A6","E2+A6","E2+A6","E2+A6",
-	             "A4+D6","A4+D6","A4+D6","A4+D6","A2+D4","A2+D4","A2+D4","A2+D4",
-		     "A2+D4+G4","A5","A6","D4","G4","G2","D4","G6","D4","G2","G4",
+
+                     "E2","E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2", "E0", "E2", "A0", "E2", "E2",
+                     "E2", "E2", "E2", "E2", "E0", "E0", "E2", "E2", "E2", "E2", "E2", "E2", "E2",
+		     "E5", "E5", "E5", "E5", "E5", "E4", "E4", "E4", "A6", "A6",
+		     "A4", "A4", "A4", "A4", "A4", "A2", "A2+D4", "A2", "A2+D4+G4", "D4",
 		     "E0","E3", "E4", "A2", "D2", "D0", "A2", "D4", "A2", "D0", "D2"]
+      
+
 DAY_TRIPPER_DURATION = ["quarter-note","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
 						"quarter-note","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
 						"quarter-note","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
@@ -33,11 +35,14 @@ DAY_TRIPPER_DURATION = ["quarter-note","eighth-note","eighth-note", "eighth-note
 						"quarter-note","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
 						"quarter-note","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
 						"quarter-note","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note",
-						"eighth-note","eighth-note","eighth-note","eighth-note","eighth-note","eighth-note","eighth-note","eighth-note","eighth-note","eighth-note","eighth-note",
-						"eighth-note","eighth-note","eighth-note","eighth-note","eighth-note","eighth-note","eighth-note","eighth-note","eighth-note","eighth-note","eighth-note","eighth-note",
-						"eighth-note","eighth-note","eighth-note","eighth-note","eighth-note","eighth-note","eighth-note","eighth-note","eighth-note", "eighth-note","eighth-note","eighth-note",
-						"eighth-note","eighth-note","eighth-note","eighth-note","eighth-note","eighth-note","eighth-note","eighth-note",
+
+                                                'quarter-note', 'eighth-note', 'eighth-note', 'quarter-note', 'eighth-note', 'eighth-note', 'quarter-note', 'eighth-note', 'eighth-note', 'sixteenth-note', 'sixteenth-note', 'eighth-note', 'eighth-note', 'eighth-note', 
+						'quarter-note', 'eighth-note', 'eighth-note', 'eighth-rest', 'eighth-note', 'eighth-rest', 'eighth-note', 'eighth-note', 'eighth-note', 'eighth-note', 'eighth-note', 'eighth-note', 'eighth-note', 'eighth-note', 'eighth-note',
+						'quarter-note', 'eighth-note', 'eighth-note', 'eighth-rest', 'eighth-note', 'eighth-rest', 'eighth-note', 'quarter-note', 'eighth-note', 'eighth-note', 'quarter-note', 'quarter-note',
+						'quarter-note', 'quarter-note', 'quarter-note', 'eighth-note', 'eighth-note', 'quarter-note', 'quarter-note', 'eighth-note', 'eighth-note', 'quarter-note',
 						"quarter-note","eighth-note","eighth-note", "eighth-note","eighth-note","quarter-note","eighth-note","quarter-note","eighth-note","eighth-note","eighth-note"]
+
+
 
 LANDSLIDE_FRETS = ["A3","G0","D2","B1","A3","G0","D2","A2","G0","D0","B3","A2","G0","D0",
 				   "A0","G0","D2","B1","A0","G0","D2","A2","G0","D0","B3","A2","G0","D0",
