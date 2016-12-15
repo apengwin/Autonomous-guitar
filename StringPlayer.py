@@ -4,6 +4,7 @@ import time
 import re
 from multiprocessing import Process
 import sys
+import signal
 
 """ 
 File that will use Jasper API to control the robot
@@ -32,6 +33,7 @@ def play(song_name, speed):
 
 def handle(text, mic, profile):
         # make this more sophisticated
+	print "I'm in handle"
 	song_name = " ".join(text.split()[1:])
 	global guitar_process
         if text.split()[0] == "PLAY":
@@ -46,6 +48,7 @@ def handle(text, mic, profile):
                 print "yeah"
                 guitar_process.start()
         elif text.split()[0] == "STOP":
+        	print "HIIII"
 		if guitar_process != None:     
 			print "attempting to stop guitar"
 			guitar_process.terminate()
@@ -60,8 +63,8 @@ def term_cleanup(signal, frame):
 
 def isValid(text):
 	print "Getting songs"
-	cond1 = bool(re.search("play one", text, re.IGNORECASE))
-	#cond2 = bool(re.search("play two", text, re.IGNORECASE))
+	cond1 = bool(re.search("play", text, re.IGNORECASE))
+	cond2 = bool(re.search("stop", text, re.IGNORECASE))
 	#cond3 = bool(re.search("play three", text, re.IGNORECASE))
 	#return cond1 or cond2 or cond3
-	return cond1
+	return cond1 or cond2

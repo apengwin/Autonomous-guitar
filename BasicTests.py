@@ -6,22 +6,22 @@
 from guitar import *
 from Song import *
 import time
-guitar = Guitar(4)
+#guitar = Guitar(4)
 
 
 ##################################
 ######### String Tests #############
 ##################################
 def allStringTest():
-    basic_frets = ['E0','A0','D0','G0','B0','e0']
-    basic_durations = ["quarter-note-dotted","eighth-note","quarter-note","quarter-note","quarter-note","quarter-note"]
+    basic_frets = ['E1','A1','D1','G1','B1','e1']
+    basic_durations = ["quarter-note","quarter-note","quarter-note","quarter-note","quarter-note","quarter-note"]
     tempo = 120
     guitar.add_song("all-strings", basic_frets, basic_durations, tempo)
     guitar.play("all-strings", "normal")
 
 def OneStringTest():
-    basic_frets = ['E0+A0+D0+G0+B0+e0']
-    basic_durations = ["quarter-note"]
+    basic_frets =  ['E2', 'E3', 'E4' ]
+    basic_durations = [ "quarter-note", 'quarter-note', 'quarter-note']
     tempo = 120
     guitar.add_song("basic-one", basic_frets, basic_durations, tempo)
     #print guitar.get_songs_dict()["basic-one"]
@@ -49,8 +49,9 @@ def ThreeStringTest():
 ######### Fret Tests #############
 ##################################
 def OneFretTest():
-    basic_frets = ['E1']
+    basic_frets = ['E3']
     basic_durations = ["quarter-note"]
+    print "hello"
     tempo = 120
     guitar.add_song("fret-one", basic_frets, basic_durations, tempo)
     guitar.play("fret-one", "normal")
@@ -105,8 +106,7 @@ def testEachFret():
                  "D0","D1","D2","D3","D4",
                  "G0","G1","G2","G3","G4",
                  "B0","B1","B2","B3","B4",
-                 "e0","e1","e2","e3","e4"]
-    clean_basic_frets = convert_notes(all_frets, guitar)
+                 "e0","e1","e2","e3"]
     basic_durations = ["quarter-note","quarter-note","quarter-note",
                        "quarter-note","quarter-note","quarter-note",
                        "quarter-note","quarter-note","quarter-note",
@@ -116,9 +116,9 @@ def testEachFret():
                        "quarter-note","quarter-note","quarter-note",
                        "quarter-note","quarter-note","quarter-note",
                        "quarter-note","quarter-note","quarter-note",
-                       "quarter-note","quarter-note","quarter-note"]
+                       "quarter-note","quarter-note"]
     tempo = 120
-    song = guitar.add_song("testEachFret", clean_basic_frets, basic_durations, tempo)
+    song = guitar.add_song("testEachFret", all_frets, basic_durations, tempo)
     #print(song.get_song())
     guitar.play("testEachFret", "normal")
 
@@ -160,22 +160,25 @@ def TwoNoteSongTest():
     #print(song.get_song())
     guitar.play("two-note", "normal") 
 
-
+def test_DAYTRIPPER():
+    guitar.play("DAY TRIPPER", "normal")
 ############### Tests ##################
-allStringTest()
-time.sleep(2)
-OneStringTest()
+#allStringTest()
+#time.sleep(2)
+#OneStringTest()
 #time.sleep(4)
 #TwoStringTest()
 #time.sleep(4)
+#OneFretTest()
 #ThreeFretTest()
 #FourFretTest()
 #FiveFretTest()
 #SixFretTest()
 #TwoNoteSongTest()
 #testEachFret()
-
-
+#test_DAYTRIPPER()
+#guitar.play("HOTEL CALIFORNIA", "normal")
+#guitar.play("LANDSLIDE", "normal")
 
 
 

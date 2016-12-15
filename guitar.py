@@ -125,7 +125,7 @@ class Guitar(object):
                 #print "rest for " + str(duration) + " seconds"
                 time.sleep(duration)
             elif note[-1] == "strum":
-                self.strum(note, speed)
+                self.strum(note, tempo_multiplier)
 
     def cleanup(self):
         GPIO.output(self.chan_list, GPIO.LOW)
@@ -143,29 +143,67 @@ class Guitar(object):
 
     def strum(self,note, tempo_multiplier):
         frets = note[0]
-	open_string_to_GPIO = {"E": 3, "A":5, "D":7, "G":8, "B":10, "e":11}
-        GPIO_frets = []
+	open_string_to_gpio = {"E": 3, "A":5, "D":7, "G":8, "B":10, "e":11}
+        gpio_frets = []
+        index = 0
+        found_e3 = False
         for fret in frets:
-            GPIO_frets += self.GPIO_dict[fret]
-        GPIO_strings = [open_string_to_GPIO[fret[0]] for fret in frets]
+            gpio_frets += self.GPIO_dict[fret]
+            if fret == "e3":
+                found_e3 = True
+                break
+            index += 1
+	#print gpio_frets
+        gpio_strings = [open_string_to_gpio[fret[0]] for fret in frets]
         delay = note[1]
 
         curr_time = time.clock()
-        GPIO.output(GPIO_frets, GPIO.HIGH) # set the GPIO_fret HIGH
-        #print str(GPIO_frets) + ", " + str(delay) # comment this out when you actually play 
-        time.sleep(0.05) # this gives time for the fret to be compressed before strumming
-        for string in GPIO_strings:
-            print string
-            GPIO.output(string, GPIO.HIGH)
-            print "Plucking " + str(string) 
-            #if (len(GPIO_strings) > 1):
-            time.sleep(EPSILON)
-	    GPIO.output(string, GPIO.LOW)
-	#time.sleep(EPSILON)
-        #GPIO.output(GPIO_strings, GPIO.LOW)
+        GPIO.output(gpio_frets, GPIO.HIGH) # set the gpio_fret high
+        counter = 0
+        for string in gpio_strings:
+            if not (found_e3 and counter == index):
+                GPIO.output(string, GPIO.HIGH)
+         #       print string
+          #      print "plucking " + str(string) 
+                time.sleep(EPSILON)
+	        GPIO.output(string, GPIO.LOW)
+            else:
+                time.sleep(EPSILON)
+            counter += 1
+            #if (len(gpio_strings) > 1):
+	#time.sleep(epsilon)
+        #gpio.output(gpio_strings, gpio.low)
         #print "turning off string plucking solenoids"
         while time.clock() < curr_time + delay: {}
-        GPIO.output(GPIO_frets, GPIO.LOW)
+        GPIO.output(gpio_frets, GPIO.LOW)
+#        print "turning off fret solenoids"
+
+    def other_strum(self, note, tempo_multiplier):	
+        frets = note[0]
+	open_string_to_gpio = {"E": 3, "A":5, "D":7, "G":8, "B":10, "e":11}
+        gpio_frets = []
+        open_frets = []
+        hammer_frets = []
+        for fret in frets:
+            if fret[-1] == "0":
+                gpio_frets += [open_string_to_gpio[fret[0]]]
+            else:
+            	gpio_frets += self.GPIO_dict[fret]
+	print gpio_frets
+        delay = note[1]
+
+        curr_time = time.clock()
+        for string in gpio_frets:
+             GPIO.output(string, GPIO.HIGH)
+             print string
+             print "plucking " + str(string) 
+             time.sleep(EPSILON)
+	     GPIO.output(string, GPIO.LOW)
+	#time.sleep(epsilon)
+        #gpio.output(gpio_strings, gpio.low)
+        #print "turning off string plucking solenoids"
+        while time.clock() < curr_time + delay: {}
+        #GPIO.output(gpio_frets, GPIO.LOW)
         #print "turning off fret solenoids"
 
 # class StringInstrument(object):
