@@ -1,12 +1,3 @@
-Lab 7. Look I made a repo.
+Voice Controlled Raspberry Pi program to play a guitar. 
 
-In terminal, execute `git init`. 
-
-On github, create new remote repo.
-
-execute `git remote add origin https://github.com/apengwin/149_project.git`
-
-`touch README.md`
-`git add README.md`
-
-Make first commit and push to remote.
+Video to come...
