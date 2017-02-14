@@ -197,7 +197,8 @@ class Guitar(object):
         #time.sleep(epsilon)
         #gpio.output(gpio_strings, gpio.low)
         #print "turning off string plucking solenoids"
-        while time.clock() < curr_time + delay: {}
+        while time.clock() < curr_time + delay:
+		pass
         #GPIO.output(gpio_frets, GPIO.LOW)
         #print "turning off fret solenoids"
 
